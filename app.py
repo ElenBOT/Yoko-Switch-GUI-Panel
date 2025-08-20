@@ -7,7 +7,7 @@ import streamlit as st
 import json
 import os
 from utils import operate, connect, disconnect 
-
+import time
 
 # Load config and initialized connection to false
 CONFIG_FILE = "instruments.json"
@@ -139,4 +139,5 @@ for idx, inst in enumerate(instruments):
 # Save updated values (including connected status)
 with open(CONFIG_FILE, "w") as f:
     json.dump(instruments, f, indent=4)
+
 

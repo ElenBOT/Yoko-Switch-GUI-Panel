@@ -2,6 +2,7 @@
 An GUI panel for using YOKOGAWA to operate microwave switch.
 
 # Usage
+After auto setup, double click `auto_setup.bat` again to open GUI.
 ![alt text](image.png)
 
 # Auto setup
@@ -18,3 +19,4 @@ An GUI panel for using YOKOGAWA to operate microwave switch.
 >
 
 > This batch file can be used as setup as well as open GUI.
+

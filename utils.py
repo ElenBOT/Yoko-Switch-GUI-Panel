@@ -133,6 +133,7 @@ def operate(address, v_max, rising_time, flat_time, pm):
 
     ## ending
     yoko.write(':OUTP OFF')
-   _double_click_blocking_addr.remove(address)
+    _double_click_blocking_addr.remove(address)
 
     return True
+

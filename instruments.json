@@ -1,0 +1,23 @@
+[
+    {
+        "address": "USB0::0x0B21::0x0039::91S522309::0::INSTR",
+        "v_max": 0.65,
+        "rising_time": 0.5,
+        "flat_time": 0.2,
+        "connected": true
+    },
+    {
+        "address": "USB0::0x0B21::0x0039::91S522308::0::INSTR",
+        "v_max": 0.65,
+        "rising_time": 0.6,
+        "flat_time": 0.0,
+        "connected": false
+    },
+    {
+        "address": "USB0::0x0B21::0x0039::91S522307::0::INSTR",
+        "v_max": 0.65,
+        "rising_time": 0.5,
+        "flat_time": 0.2,
+        "connected": false
+    }
+]

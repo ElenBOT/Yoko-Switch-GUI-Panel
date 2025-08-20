@@ -111,24 +111,24 @@ for idx, inst in enumerate(instruments):
 
    # Operate buttons with full-width alert
     with col8:
-        operate_plus = st.button("1+", key=f"plus_{idx}")
+        operate_plus = st.button("1-", key=f"plus_{idx}")
     with col9:
-        operate_minus = st.button("2-", key=f"minus_{idx}")
+        operate_minus = st.button("2+", key=f"minus_{idx}")
 
     status_placeholder = st.empty()
     if operate_plus:
         if inst.get("connected", False):
-            status_placeholder.warning("functioning 1+ operation...")
-            operate(inst['address'], v_max, rising_time, flat_time, '+')
-            status_placeholder.success(f"The inst with addr '{inst['address']}' has toggled the switch to 1+.")
+            status_placeholder.warning("functioning 1- operation...")
+            operate(inst['address'], v_max, rising_time, flat_time, '-')
+            status_placeholder.success(f"The inst with addr '{inst['address']}' has toggled the switch to 1-.")
         else:
             status_placeholder.warning(f"The inst with addr '{inst['address']}' is not connected!")
 
     if operate_minus:
         if inst.get("connected", False):
-            status_placeholder.warning("functioning 2- operation...")
-            operate(inst['address'], v_max, rising_time, flat_time, '-')
-            status_placeholder.success(f"The inst with addr '{inst['address']}' has toggled the switch to 2-.")
+            status_placeholder.warning("functioning 2+ operation...")
+            operate(inst['address'], v_max, rising_time, flat_time, '+')
+            status_placeholder.success(f"The inst with addr '{inst['address']}' has toggled the switch to 2+.")
         else:
             status_placeholder.warning(f"The inst with addr '{inst['address']}' is not connected!")
             

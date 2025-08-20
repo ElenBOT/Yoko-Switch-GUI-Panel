@@ -7,12 +7,7 @@ echo ===============================================
 echo           AUTO SWITCH PANEL ENV SETUP          
 echo ===============================================
 echo.
-echo After continue, this bat file will:
-echo 1. setup anaconda env named `switch`.
-echo 2. git clone repo into current folder.
-echo 3. pip install modules, to the env.
-echo.
-color 07
+
 
 :: Conda detection
 set "CONDA_ANACONDA=%USERPROFILE%\anaconda3"
@@ -37,6 +32,41 @@ if defined CONDA_ROOT (
     exit /b
 )
 
+:: Check if setup was already done
+if exist "setup_complete.txt" (
+    echo [INFO] Setup already completed.
+    echo [INFO] Activating conda env and launching app...
+
+    :: Current directory
+    echo.
+    echo [INFO] Current directory: %cd%
+    echo.
+
+    :: Initialize Conda
+    echo [INFO] activate env ...
+    CALL "%CONDA_ROOT%\condabin\conda.bat" activate switch
+
+    :: Open Streamlit app
+    echo [INFO] Launching GUI...
+    cd "Yoko-Switch-GUI-Panel"
+    python -m streamlit run app.py
+    endlocal
+    exit /b
+)
+
+:: ---------------------------
+:: FIRST RUN: Full setup
+:: ---------------------------
+
+echo This bat file will:
+echo 1. setup anaconda env named `switch`.
+echo 2. git clone repo into current folder.
+echo 3. pip install modules to the env.
+echo.
+color 07
+
+
+
 :: Current directory
 echo.
 echo [INFO] Current directory: %cd%
@@ -52,7 +82,7 @@ echo [INFO] Checking Conda environment 'switch'...
 conda env list | findstr "switch" >nul
 if errorlevel 1 (
     echo [INFO] Creating new environment 'switch'...
-    CALL conda create -y -n switch python=3.10
+    CALL conda create -y -n switch python=3.11
     if errorlevel 1 (
         color 0C
         echo [ERROR] Failed to create environment!
@@ -87,88 +117,21 @@ if errorlevel 1 (
     echo [INFO] Git is available.
 )
 
-:: Clone 'tomography'
+:: Clone repo
 echo.
-echo [INFO] Repository: tomography
-if exist tomography (
-    echo [INFO] 'tomography' folder exists.
+echo [INFO] Cloning repo...
+git clone https://github.com/ElenBOT/Yoko-Switch-GUI-Panel
+cd "Yoko-Switch-GUI-Panel"
+del /f /q auto_setup.bat
+cd ..
 
-    :ask_tomo
-    set /p USER_CHOICE="Do you want to (K)eep or (O)verwrite it? [K/O]: "
-    set "USER_CHOICE=!USER_CHOICE: =!"
-    if /i "!USER_CHOICE!"=="K" (
-        echo [INFO] Keeping existing folder.
-    ) else if /i "!USER_CHOICE!"=="O" (
-        echo [INFO] Overwriting 'tomography'...
-        rmdir /s /q tomography
-        git clone https://github.com/ElenBOT/tomography
-    ) else (
-        echo [WARNING] Invalid choice. Please enter K or O.
-        goto ask_tomo
-    )
-) else (
-    echo [INFO] Cloning 'tomography'...
-    git clone https://github.com/ElenBOT/tomography
-)
-
-:: Clone 'ats9371_for_tomography'
+:: Install packages
 echo.
-echo [INFO] Repository: ats9371_for_tomography
-if exist ats9371_for_tomography (
-    echo [INFO] 'ats9371_for_tomography' folder exists.
+echo [INFO] Installing Python packages 
+pip install numpy streamlit pyvisa
 
-    :ask_ats
-    set /p USER_CHOICE="Do you want to (K)eep or (O)verwrite it? [K/O]: "
-    set "USER_CHOICE=!USER_CHOICE: =!"
-    if /i "!USER_CHOICE!"=="K" (
-        echo [INFO] Keeping existing folder.
-    ) else if /i "!USER_CHOICE!"=="O" (
-        echo [INFO] Overwriting 'ats9371_for_tomography'...
-        rmdir /s /q ats9371_for_tomography
-        git clone https://github.com/ElenBOT/ats9371_for_tomography
-    ) else (
-        echo [WARNING] Invalid choice. Please enter K or O.
-        goto ask_ats
-    )
-) else (
-    echo [INFO] Cloning 'ats9371_for_tomography'...
-    git clone https://github.com/ElenBOT/ats9371_for_tomography
-)
-
-
-:: Install packages for 'tomography'
-echo.
-echo [INFO] Installing Python packages for 'tomography'...
-pushd tomography
-if exist requirements.txt (
-    pip install -r requirements.txt
-    if errorlevel 1 (
-        color 0E
-        echo [WARNING] Some packages may have failed to install in 'tomography'.
-    ) else (
-        echo [INFO] Packages installed successfully for 'tomography'.
-    )
-) else (
-    echo [WARNING] requirements.txt not found in 'tomography', skipping...
-)
-popd
-
-:: Install packages for 'ats9371_for_tomography'
-echo [INFO] Installing Python packages for 'ats9371_for_tomography'...
-pushd ats9371_for_tomography
-if exist requirements.txt (
-    pip install -r requirements.txt
-    if errorlevel 1 (
-        color 0E
-        echo [WARNING] Some packages may have failed to install in 'ats9371_for_tomography'.
-    ) else (
-        echo [INFO] Packages installed successfully for 'ats9371_for_tomography'.
-    )
-) else (
-    echo [WARNING] requirements.txt not found in 'ats9371_for_tomography', skipping...
-)
-popd
-
+:: Write setup complete marker
+echo %date% %time% > setup_complete.txt
 
 echo.
 echo ==================================================

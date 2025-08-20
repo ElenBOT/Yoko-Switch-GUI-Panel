@@ -16,4 +16,5 @@ An GUI panel for using YOKOGAWA to operate microwave switch.
 > 3. pip install modules, to the env.
 > 4. open the webpage GUI.
 >
-> This batch file can be used as setup as well as open GUI.W
+
+> This batch file can be used as setup as well as open GUI.

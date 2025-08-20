@@ -2,21 +2,28 @@
 An GUI panel for using YOKOGAWA to operate microwave switch.
 
 # Usage
-After auto setup, double click `auto_setup.bat` again to open GUI.
+1. Auto setup: double click `auto_setup.bat` again to open GUI.
+
+2. Manual setup: `python -m streamlit run app.py` to open GUI.
 ![alt text](image.png)
 
 # Auto setup
-1. windows >= 7 computer, anaconda or miniconda, git.
-2. create a folder to be the workspace.
-3. download `auto_setup.bat` and put inside that folder and double click to run it.
+Require windows >= 7 computer, anaconda or miniconda, git.
+1. create a folder to be the workspace.
+2. download `auto_setup.bat`, put it inside that folder, double click to run it.
+> [!Tip]
+> This batch file can be used as setup, as well as open GUI.
 
-> [!Note]
-> `auto_setup.bat` do the fowwling things.
-> 1. setup anaconda env named `switch` if not exist.
-> 2. git clone repo into current folder.
-> 3. pip install modules, to the env.
-> 4. open the webpage GUI.
->
-
-> This batch file can be used as setup as well as open GUI.
-
+# Manual setup
+Clone via git or download as zip.
+```
+git clone https://github.com/ElenBOT/Yoko-Switch-GUI-Panel.git
+```
+Then optionally delete `auto_setup.bat` inside it. Then install required packages
+```
+pip install numpy streamlit pyvisa
+```
+To run, use
+```
+python -m streamlit run app.py
+```

@@ -56,7 +56,7 @@ def disconnect(address: str) -> bool:
     print(f'YOKOGAWA with addr {address} is now disconnected.')
     return True
 
-
+_double_click_blocking_addr = []
 def operate(address, v_max, rising_time, flat_time, pm):
     """Operate the swtich based on the parms.
     
@@ -75,6 +75,8 @@ def operate(address, v_max, rising_time, flat_time, pm):
     Returns:
         complete (bool): ture when success.
     """
+    if address in _double_click_blocking_addr:
+        return False
     if address not in connected_insts.keys():    
         raise KeyError(f'There was no YOKOGAWA with addr "{address}" in connection by this artitecture.')
     yoko = connected_insts[address]
@@ -83,6 +85,7 @@ def operate(address, v_max, rising_time, flat_time, pm):
         raise Exception(f'The YOKOGAWA with addr "{address}" is outpting, halt.')
     
     ## init
+    _double_click_blocking_addr.append(address)
     yoko.write('*CLS')
     yoko.write(':PROG:REP 0')
     yoko.write(':SOUR:LEV 0')
@@ -105,7 +108,6 @@ def operate(address, v_max, rising_time, flat_time, pm):
             break
     else:
         raise ValueError(f"v_max {v_max}V is out of range {volt_range}V")
-    yoko.write(':OUTP ON')
     yoko.write(f':PROG:SLOP {rising_time:.6e}') # rising time
     yoko.write(f':PROG:INT {rising_time:.6e}')  # program time interval
 
@@ -131,5 +133,6 @@ def operate(address, v_max, rising_time, flat_time, pm):
 
     ## ending
     yoko.write(':OUTP OFF')
+   _double_click_blocking_addr.remove(address)
 
     return True

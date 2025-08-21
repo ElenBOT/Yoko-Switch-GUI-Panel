@@ -120,7 +120,7 @@ for idx, inst in enumerate(instruments):
         if inst.get("connected", False):
             status_placeholder.warning("functioning 1- operation...")
             operate(inst['address'], v_max, rising_time, flat_time, '-')
-            time.sleep(2.2*rising_time + flat_time)  # freeze UI 
+            time.sleep(1)  # freeze UI 
             status_placeholder.success(f"The inst with addr '{inst['address']}' has toggled the switch to 1-.")
         else:
             status_placeholder.warning(f"The inst with addr '{inst['address']}' is not connected!")
@@ -129,7 +129,7 @@ for idx, inst in enumerate(instruments):
         if inst.get("connected", False):
             status_placeholder.warning("functioning 2+ operation...")
             operate(inst['address'], v_max, rising_time, flat_time, '+')
-            time.sleep(2.2*rising_time + flat_time)  # freeze UI 
+            time.sleep(1)  # freeze UI 
             status_placeholder.success(f"The inst with addr '{inst['address']}' has toggled the switch to 2+.")
         else:
             status_placeholder.warning(f"The inst with addr '{inst['address']}' is not connected!")
@@ -139,5 +139,6 @@ for idx, inst in enumerate(instruments):
 # Save updated values (including connected status)
 with open(CONFIG_FILE, "w") as f:
     json.dump(instruments, f, indent=4)
+
 
 
